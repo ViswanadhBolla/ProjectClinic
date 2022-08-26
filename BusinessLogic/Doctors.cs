@@ -32,5 +32,13 @@ namespace BusinessLogic
             }
             return listOfDocotrs;
         }
+
+        public static SqlDataReader DoctorListSpecialization(string specialization)
+        {
+            List<string> listOfDocotrs = new List<string>();
+            DR = DB.getDocotrDetailsSpecialization(specialization);
+            return DR;
+
+        }
     }
 }

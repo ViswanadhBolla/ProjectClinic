@@ -38,6 +38,26 @@ namespace DataAccess
             return DR;
         }
 
+        public SqlDataReader getDocotrDetailsSpecialization(string specialization)
+        {
+            con = getCon();
+            cmd = new SqlCommand("select * from DoctorInfo where specialization = @specialization", con);
+            cmd.Parameters.AddWithValue("@specialization", specialization);
+            SqlDataReader DR = cmd.ExecuteReader();
+            return DR;
+        }
+
+        public SqlDataReader getDoctorAppointments(int docID, DateOnly visitdate)
+        {
+            con = getCon();
+            cmd = new SqlCommand("select convert(time,appointTime) from appointments where doctorID = @docID and convert(date,appointTime) = @visitdate", con);
+            cmd.Parameters.AddWithValue("@docID", docID);
+            cmd.Parameters.AddWithValue("@visitdate", visitdate.ToDateTime(TimeOnly.Parse("00:00:00")));
+
+            SqlDataReader DR = cmd.ExecuteReader();
+            return DR;
+        }
+
         public int addPatientDetails(string firstname, string lastname, string gender, int age, DateTime dob)
         {
             con = getCon();
@@ -49,6 +69,26 @@ namespace DataAccess
             cmd.Parameters.AddWithValue("@age", age);
             cmd.Parameters.AddWithValue("@dob", dob);
             cmd.Connection = con;
+            int i = cmd.ExecuteNonQuery();
+            return i;
+        }
+
+        public SqlDataReader getPatientDetails(int ID)
+        {
+            con = getCon();
+            cmd = new SqlCommand("select * from patientInfo where patientID = @ID", con);
+            cmd.Parameters.AddWithValue("@ID", ID);
+            SqlDataReader DR = cmd.ExecuteReader();
+            return DR;
+        }
+
+        public int insertAppointment(int patientID, int docID, DateTime appointtime)
+        {
+            con = getCon();
+            cmd = new SqlCommand("insert into appointments values(@patientID,@docID,@appointtime)", con);
+            cmd.Parameters.AddWithValue("@patientID", patientID);
+            cmd.Parameters.AddWithValue("@docID", docID);
+            cmd.Parameters.AddWithValue("@appointtime", appointtime);
             int i = cmd.ExecuteNonQuery();
             return i;
         }
