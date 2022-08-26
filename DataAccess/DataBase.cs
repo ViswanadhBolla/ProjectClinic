@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -35,6 +36,21 @@ namespace DataAccess
             cmd = new SqlCommand("select * from DoctorInfo", con);
             SqlDataReader DR = cmd.ExecuteReader();
             return DR;
+        }
+
+        public int addPatientDetails(string firstname, string lastname, string gender, int age, DateTime dob)
+        {
+            con = getCon();
+            cmd = new SqlCommand("insertPatientData");
+            cmd.CommandType = System.Data.CommandType.StoredProcedure;
+            cmd.Parameters.AddWithValue("@firstname", firstname);
+            cmd.Parameters.AddWithValue("@lastname", lastname);
+            cmd.Parameters.AddWithValue("@gender", gender);
+            cmd.Parameters.AddWithValue("@age", age);
+            cmd.Parameters.AddWithValue("@dob", dob);
+            cmd.Connection = con;
+            int i = cmd.ExecuteNonQuery();
+            return i;
         }
     }
 }

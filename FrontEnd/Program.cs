@@ -34,7 +34,7 @@ namespace FrontEnd
                 while (loginStatus)
                 {
                     int choice = 0;
-                    Console.WriteLine("press 1 to view doctorDetails\npress 5 to logout.");
+                    Console.WriteLine("press 1 to view doctorDetails\npress 2 to Add patient\npress 5 to logout.");
                     int.TryParse(Console.ReadLine(), out choice);
                     Console.Clear();
                     switch (choice)
@@ -45,6 +45,18 @@ namespace FrontEnd
                             foreach (var item in list)
                             {
                                 Console.WriteLine(item);
+                            }
+                            break;
+                        case 2:
+                            Patient p = new Patient();
+                            int i = p.AddPatientData();
+                            if (i == 0)
+                            {
+                                Console.WriteLine("Patient data enry unsuccessful");
+                            }
+                            else
+                            {
+                                Console.WriteLine("patient data successfylly created");
                             }
                             break;
                         case 5:
