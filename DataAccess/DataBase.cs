@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Reflection;
@@ -86,6 +87,29 @@ namespace DataAccess
         {
             con = getCon();
             cmd = new SqlCommand("insert into appointments values(@patientID,@docID,@appointtime)", con);
+            cmd.Parameters.AddWithValue("@patientID", patientID);
+            cmd.Parameters.AddWithValue("@docID", docID);
+            cmd.Parameters.AddWithValue("@appointtime", appointtime);
+            int i = cmd.ExecuteNonQuery();
+            return i;
+        }
+
+        public DataTable fetchRecords(int patientID)
+        {
+            con = getCon();
+            cmd = new SqlCommand("Select * from appointments where patientID=@patientID", con);
+            cmd.Parameters.AddWithValue("@patientID", patientID);
+            SqlDataAdapter da = new SqlDataAdapter(cmd);
+            DataSet ds = new DataSet();
+            da.Fill(ds);
+            DataTable dt = ds.Tables[0];
+            return dt;
+        }
+        public int deleteRecord(int patientID, int docID, DateTime appointtime)
+        {
+            
+            con = getCon();
+            cmd = new SqlCommand("delete from appointments where ( patientID= @patientID and doctorID = @docID) and appointTime=@appointtime", con);
             cmd.Parameters.AddWithValue("@patientID", patientID);
             cmd.Parameters.AddWithValue("@docID", docID);
             cmd.Parameters.AddWithValue("@appointtime", appointtime);

@@ -5,6 +5,7 @@ namespace FrontEnd
     public class Program
     {
         static LoginPage session = new LoginPage();
+        static Appointment ap = new Appointment();
         public static void Main(string[] args)
         {
             bool loginStatus = false;
@@ -34,7 +35,7 @@ namespace FrontEnd
                 while (loginStatus)
                 {
                     int choice = 0;
-                    Console.WriteLine("press 1 to view doctorDetails\npress 2 to Add patient\npress 3 to create an appointment.\npress 5 to logout.");
+                    Console.WriteLine("press 1 to view doctorDetails\npress 2 to Add patient\npress 3 to create an appointment.\npress 4 to cancel appointment\npress 5 to logout.");
                     int.TryParse(Console.ReadLine(), out choice);
                     Console.Clear();
                     switch (choice)
@@ -63,8 +64,13 @@ namespace FrontEnd
                             break;
                         case 3:
                             //create an appointment
-                            Appointment ap = new Appointment();
+                            
                             ap.createAppointment();
+                            break;
+                        case 4:
+                            //cancel appointment
+                            
+                            ap.cancelAppointment();
                             break;
                         case 5:
                             loginStatus = false;

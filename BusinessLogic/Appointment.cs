@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
@@ -139,7 +140,7 @@ namespace BusinessLogic
 
         public void bookAppointment()
         {
-            int i = db.insertAppointment(patientID,doctorID,appointTime);
+            int i = db.insertAppointment(PatientID,doctorID,appointTime);
             if (i > 0)
             {
                 Console.WriteLine("appointment Booked");
@@ -159,6 +160,44 @@ namespace BusinessLogic
             createDocotorObj();
             selectDoctor();
             bookAppointment();
+
+        }
+        public void cancelAppointment()
+        {
+            getpatientID();
+            DataTable dt = new DataTable();
+            dt = db.fetchRecords(PatientID);
+            int record = 1;
+            Console.WriteLine("Select the record you want to delete.");
+            foreach (DataRow dr in dt.Rows)
+            {
+                Console.Write(record+". ");
+                record += 1;
+                foreach (var item in dr.ItemArray)
+                {
+                    Console.Write(item + " ");
+                }
+                Console.WriteLine();
+            }
+            Console.Write("enter the row number of the record you want to delete: ");
+            int choice = 0;
+            int.TryParse(Console.ReadLine(), out choice);
+
+            DataRow dr1 = dt.Rows[choice - 1];
+
+            PatientID = (int)dr1[0];
+            doctorID = (int)dr1[1];
+            appointTime = DateTime.Parse(dr1[2].ToString());
+            int i = db.deleteRecord(PatientID, doctorID, appointTime);
+
+            if(i> 0)
+            {
+                Console.WriteLine("appointment cancled.");
+            }
+            else
+            {
+                Console.WriteLine("Appointment not cancled");
+            }
 
         }
     }
